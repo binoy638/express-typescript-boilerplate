@@ -7,9 +7,19 @@
     "start:dev": "nodemon",
     "start:prod": "node -r ts-node/register/transpile-only -r tsconfig paths/register ./dist/src/index.js",
     "build": "tsc -p tsconfig.prod.json",
+    "typecheck": "tsc --noEmit",
     "test": "jest",
-    "test:watch":"jest --watch",
-    "test:coverage":"jest --coverage"
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "format:check": "prettier -c \"**/*.{js,ts,json}\"",
+    "format": "prettier -w \"**/*.{js,ts,json}\"",
+    "lint": "eslint \"src/**/*.{js,ts}\"",
+    "prepare": "husky install",
+    "pre-commit": "npm run typecheck && lint-staged && jest"
+  },
+    "lint-staged": {
+    "src/**/*.{js,ts}": "eslint",
+    "**/*.{js,ts,json}": "prettier --write"
   },
   "keywords": [],
   "author": "binoy638",
@@ -26,7 +36,9 @@
     "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^7.0.1",
     "jest": "^27.0.6",
+    "lint-staged": "^11.1.1",
     "nodemon": "^2.0.12",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.4",
