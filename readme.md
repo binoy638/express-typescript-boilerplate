@@ -1,4 +1,4 @@
-# Starter Express app with typescript and docker for development & production.
+# Starter Express app with typescript
 
 ## Running the app in the development mode
 
