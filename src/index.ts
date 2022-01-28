@@ -1,3 +1,3 @@
-import dotenv from 'dotenv-safe';
+import dotenv from 'dotenv';
 
 dotenv.config();

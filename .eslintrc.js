@@ -11,6 +11,9 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
+    'plugin:sonarjs/recommended',
+    'plugin:unicorn/recommended',
+    'plugin:security/recommended',
     'plugin:import/typescript',
   ],
   parser: '@typescript-eslint/parser',
@@ -21,6 +24,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier', 'import'],
   rules: {
     'prettier/prettier': 'error',
+    'import/prefer-default-export': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'error',
     'no-console': 'off',
