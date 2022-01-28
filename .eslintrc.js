@@ -27,6 +27,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'error',
+    'unicorn/prevent-abbreviations': 'off',
     'no-console': 'off',
     'import/order': [
       'error',
