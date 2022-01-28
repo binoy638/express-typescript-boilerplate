@@ -1,7 +1,7 @@
 {
-  "name": "typescript-nodejs-starter",
+  "name": "express-typescript-starter",
   "version": "1.0.0",
-  "description": "Started project setup for node js backend projects",
+  "description": "Express Typescript NodeJS Starter with Docker",
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --inspect=8181 --respawn --transpile-only src/index.ts",
@@ -14,7 +14,7 @@
     "format:check": "prettier -c \"**/*.{js,ts,json}\"",
     "format": "prettier -w \"**/*.{js,ts,json}\"",
     "lint": "eslint --fix ./src/*",
-    "prepare": "husky install",
+    "install:husky": "husky install",
     "pre-commit": "npm run typecheck && lint-staged && jest"
   },
   "lint-staged": {
@@ -28,7 +28,6 @@
     "@types/cors": "^2.8.12",
     "@types/dotenv-safe": "^8.1.2",
     "@types/express": "^4.17.13",
-    "@types/helmet": "^4.0.0",
     "@types/jest": "^26.0.24",
     "@types/morgan": "^1.9.3",
     "@types/node": "^16.4.12",
