@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
+import logger from './config/logger';
 
 const PORT = process.env.PORT || 8080;
 
@@ -20,5 +21,5 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Listening at http://localhost:${PORT}`);
+  logger.info(`Listening at http://localhost:${PORT}`);
 });
