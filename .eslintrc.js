@@ -21,7 +21,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'prettier', 'import'],
+  plugins: ['@typescript-eslint', 'prettier', 'import', 'simple-import-sort'],
   rules: {
     'prettier/prettier': 'error',
     'import/prefer-default-export': 'off',
@@ -29,16 +29,8 @@ module.exports = {
     'import/no-unresolved': 'error',
     'unicorn/prevent-abbreviations': 'off',
     'no-console': 'off',
-    'import/order': [
-      'error',
-      {
-        'newlines-between': 'never',
-        groups: [
-          ['builtin', 'external'],
-          ['internal', 'parent', 'sibling', 'index'],
-        ],
-      },
-    ],
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
   },
   settings: {
     'import/parsers': {

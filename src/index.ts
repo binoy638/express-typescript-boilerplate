@@ -1,7 +1,8 @@
-import express, { Request, Response } from 'express';
-import morgan from 'morgan';
 import cors from 'cors';
+import express, { Request, Response } from 'express';
 import helmet from 'helmet';
+import morgan from 'morgan';
+
 import logger from './config/logger';
 
 const PORT = process.env.PORT || 8080;
