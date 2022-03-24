@@ -23,6 +23,8 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'prettier', 'import', 'simple-import-sort'],
   rules: {
+    'no-unused-vrs': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
     'prettier/prettier': 'error',
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
