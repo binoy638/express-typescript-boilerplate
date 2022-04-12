@@ -29,6 +29,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'error',
+    'unicorn/prefer-node-protocol': 'off',
     'unicorn/prevent-abbreviations': 'off',
     'no-console': 'off',
     'simple-import-sort/imports': 'error',
