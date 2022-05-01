@@ -1,4 +1,4 @@
-# Starter Express app with typescript
+# NodeJs REST API boilerplate
 
 ## Running the app in the development mode
 
