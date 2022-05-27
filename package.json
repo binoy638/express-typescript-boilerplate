@@ -14,7 +14,7 @@
     "format:check": "prettier -c \"**/*.{js,ts,json}\"",
     "format": "prettier -w \"**/*.{js,ts,json}\"",
     "lint": "eslint --fix ./src/*",
-    "install:husky": "husky install",
+    "prepare": "husky install",
     "pre-commit": "npm run typecheck && lint-staged && jest"
   },
   "lint-staged": {

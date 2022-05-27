@@ -1,4 +1,4 @@
-# NodeJs REST API boilerplate
+# Express Typescript boilerplate
 
 ## Running the app in the development mode
 
