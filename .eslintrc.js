@@ -25,6 +25,7 @@ module.exports = {
   rules: {
     'no-unused-vrs': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-shadow': 'error',
     'prettier/prettier': 'error',
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
@@ -32,6 +33,7 @@ module.exports = {
     'unicorn/prefer-node-protocol': 'off',
     'unicorn/prevent-abbreviations': 'off',
     'no-console': 'off',
+    'no-shadow': 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
   },
