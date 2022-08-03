@@ -4,6 +4,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import logger from './config/logger';
+import errorHandler from './middlewares/errorHandler.middleware';
+import notFoundHandler from './middlewares/notFoundHandler.middleware';
 
 const PORT = process.env.PORT || 8080;
 
@@ -24,3 +26,7 @@ app.get('/', (req: Request, res: Response) => {
 app.listen(PORT, () => {
   logger.info(`Listening at http://localhost:${PORT}`);
 });
+
+//* Error handler middleware
+app.use(notFoundHandler);
+app.use(errorHandler);

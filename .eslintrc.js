@@ -32,6 +32,7 @@ module.exports = {
     'import/no-unresolved': 'error',
     'unicorn/prefer-node-protocol': 'off',
     'unicorn/prevent-abbreviations': 'off',
+    'unicorn/filename-case': 'off',
     'no-console': 'off',
     'no-shadow': 'off',
     'simple-import-sort/imports': 'error',
@@ -44,6 +45,7 @@ module.exports = {
     'import/resolver': {
       typescript: {
         alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+        project: './tsconfig.json',
       },
     },
   },
