@@ -7,5 +7,5 @@ services:
       dockerfile: Dockerfile
     container_name: express-app-prod
     ports:
-      - "8080:8080"
+    command: npm start
 

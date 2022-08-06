@@ -1,39 +1,16 @@
-### Stage 1 ###
-
-FROM node:16-alpine as ts-compiler
+FROM node:16
 
 WORKDIR /app
 
-COPY package*.json ./
+USER root
 
-COPY tsconfig*.json ./
+ADD package*.json ./
 
-RUN npm install
+RUN npm i
 
 COPY . ./
 
+RUN npm install 
+
+
 RUN npm run build
-
-
-### Stage 2 ###
-FROM node:16-alpine as ts-remover
-
-WORKDIR /app
-
-COPY --from=ts-compiler /app/package*.json ./
-
-COPY --from=ts-compiler /app/dist ./
-
-RUN npm install --only=production
-
-
-### Stage 3 ###
-FROM gcr.io/distroless/nodejs:16
-
-WORKDIR /app
-
-COPY --from=ts-remover /app ./
-
-USER 1000
-
-CMD ["src/index.js"]
