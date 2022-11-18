@@ -22,13 +22,13 @@ Clone this project and use it to create your own Express project.
 Clone the project
 
 ```bash
-  git clone https://github.com/binoy638/Express-Typescript-Boilerplate
+  git clone --depth=1 https://github.com/binoy638/Express-Typescript-Boilerplate.git my-project-name
 ```
 
 Go to the project directory
 
 ```bash
-  cd Express-Typescript-Boilerplate
+  cd my-project-name
 ```
 
 Install dependencies
@@ -49,13 +49,13 @@ Start the server
 Clone the project
 
 ```bash
-  git clone https://github.com/binoy638/Express-Typescript-Boilerplate
+  git clone --depth=1 https://github.com/binoy638/Express-Typescript-Boilerplate.git my-project-name
 ```
 
 Go to the project directory
 
 ```bash
-  cd Express-Typescript-Boilerplate
+  cd cd my-project-name
 ```
 
 Start the server with docker-compose
