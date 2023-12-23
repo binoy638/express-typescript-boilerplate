@@ -13,7 +13,7 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:sonarjs/recommended',
     'plugin:unicorn/recommended',
-    'plugin:security/recommended',
+    'plugin:security/recommended-legacy',
     'plugin:import/typescript',
   ],
   parser: '@typescript-eslint/parser',
