@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:20.10.0-alpine
 
 WORKDIR /app
 
@@ -9,8 +9,5 @@ ADD package*.json ./
 RUN npm i
 
 COPY . ./
-
-RUN npm install 
-
 
 RUN npm run build
