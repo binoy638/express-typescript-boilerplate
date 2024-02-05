@@ -18,10 +18,11 @@ declare global {
 }
 
 export const validateEnvironmentVariables = () => {
-  try {
-    environmentVariablesSchema.parse(process.env);
-  } catch (error) {
-    logger.error(error);
-    throw new Error('Environment variables not found');
+  const result = environmentVariablesSchema.safeParse(process.env);
+  if (result.success) {
+    const envs = Object.keys(result.data);
+    logger.info(`environment variables [${envs}] loaded successfully`);
+  } else {
+    throw new Error(`missing environment variables [ ${result.error.errors[0].path} ]`);
   }
 };
