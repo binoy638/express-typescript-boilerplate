@@ -3,12 +3,13 @@ import boom from '@hapi/boom';
 import type { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 
+import { envManager } from '../config/env';
 import logger from '../config/logger';
 
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction): void => {
   const isZodError = err instanceof ZodError;
-  const isDev = process.env.NODE_ENV === 'development';
+  const isDev = envManager.getEnv('NODE_ENV') === 'development';
   if (isDev && isZodError) {
     res.status(400).json({ error: err.issues });
     return;
