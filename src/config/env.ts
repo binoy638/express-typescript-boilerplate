@@ -29,7 +29,7 @@ class EnvManager {
     }
   }
 
-  getEnv(key: keyof typeof envSchema.shape) {
+  getEnv<T extends keyof z.infer<typeof envSchema>>(key: T): z.infer<typeof envSchema>[T] {
     return this.env[key];
   }
 }
