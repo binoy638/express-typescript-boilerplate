@@ -18,6 +18,7 @@ app.use(helmet());
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //* Register routers
 app.use('/api/test', testRouter);
@@ -25,8 +26,6 @@ app.use('/api/test', testRouter);
 //* Start the server
 app.listen(PORT, () => {
   try {
-    logger.info('Checking environment variables');
-
     logger.info(`Listening at http://localhost:${PORT}`);
   } catch (error) {
     logger.error('Failed to start server:', error);
