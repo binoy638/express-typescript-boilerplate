@@ -1,28 +1,31 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import boom from '@hapi/boom';
-import { NextFunction, Request, Response } from 'express';
-import { ZodObject } from 'zod';
+import type { NextFunction, Request, RequestHandler, Response } from 'express';
+import type { z, ZodTypeAny } from 'zod';
 
-import logger from '../config/logger';
-
-export interface RequestPayload {
-  body?: ZodObject<any>;
-  query?: ZodObject<any>;
-  params?: ZodObject<any>;
+export interface RequestSchemas {
+  body?: ZodTypeAny;
+  query?: ZodTypeAny;
+  params?: ZodTypeAny;
 }
 
-//* Middleware to validate request payload
+type Infer<T> = T extends ZodTypeAny ? z.infer<T> : unknown;
+
+export type TypedRequestHandler<S extends RequestSchemas> = RequestHandler<
+  Infer<S['params']>,
+  unknown,
+  Infer<S['body']>,
+  Infer<S['query']>
+>;
+
 const validateRequest =
-  (requestPayload: RequestPayload) =>
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  <S extends RequestSchemas>(schemas: S) =>
+  async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
     try {
-      if (requestPayload?.body) await requestPayload.body.parseAsync(req.body);
-      if (requestPayload?.query) await requestPayload.query.parseAsync(req.query);
-      if (requestPayload?.params) await requestPayload.params.parseAsync(req.params);
+      if (schemas.body) req.body = await schemas.body.parseAsync(req.body);
+      if (schemas.query) Object.assign(req.query, await schemas.query.parseAsync(req.query));
+      if (schemas.params) Object.assign(req.params, await schemas.params.parseAsync(req.params));
       next();
     } catch (error) {
-      logger.error(error);
-      next(boom.badRequest('Invalid request payload'));
+      next(error);
     }
   };
 

@@ -1,4 +1,4 @@
-FROM node:20.10.0-alpine
+FROM node:24-slim
 
 WORKDIR /app
 
@@ -11,3 +11,5 @@ RUN npm i
 COPY . ./
 
 RUN npm run build
+
+

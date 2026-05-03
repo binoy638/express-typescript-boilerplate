@@ -1,7 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-underscore-dangle */
-import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { createLogger, format, Logger, transports } from 'winston';
@@ -10,17 +6,14 @@ import Transport from 'winston-transport';
 
 import { envManager } from './env';
 
-dotenv.config();
-
 const { combine, printf, colorize, errors, timestamp, metadata, json, splat } = format;
 
-// Enhanced configuration interface
 interface LoggerConfig {
   logDir?: string;
   logLevel?: string;
   maxFileSize?: string;
   maxFiles?: string;
-  console?: boolean;
+  enableConsole?: boolean;
   file?: boolean;
   customFields?: Record<string, unknown>;
 }
@@ -28,7 +21,6 @@ interface LoggerConfig {
 class LoggerService {
   private static instance: Logger;
 
-  // Ensure log directory exists
   private static ensureLogDirectory(logDir: string): void {
     try {
       if (!fs.existsSync(logDir)) {
@@ -39,10 +31,8 @@ class LoggerService {
     }
   }
 
-  // Create custom format with configurable fields
   private static createCustomFormat(customFields: Record<string, unknown> = {}) {
     return format(info => {
-      // Add all custom fields to the info object
       for (const [key, value] of Object.entries(customFields)) {
         info[key] = value;
       }
@@ -50,25 +40,22 @@ class LoggerService {
     })();
   }
 
-  // Create production logger
   private static createProdLogger(config: LoggerConfig = {}): Logger {
     const {
       logDir = 'logs',
       logLevel = 'debug',
       maxFileSize = '10m',
       maxFiles = '14d',
-      console = true,
+      enableConsole = true,
       file = true,
       customFields = {},
     } = config;
 
-    // Ensure log directory exists
     this.ensureLogDirectory(logDir);
 
     const logTransports: Transport[] = [];
 
-    // Console Transport
-    if (console) {
+    if (enableConsole) {
       logTransports.push(
         new transports.Console({
           format: combine(
@@ -79,7 +66,6 @@ class LoggerService {
       );
     }
 
-    // File Transport
     if (file) {
       const customFormat = this.createCustomFormat(customFields);
 
@@ -91,7 +77,6 @@ class LoggerService {
           maxFiles,
           format: combine(timestamp(), customFormat, json()),
         }),
-        // Separate error log file
         new DailyRotateFile({
           filename: path.join(logDir, 'error-%DATE%.log'),
           datePattern: 'YYYY-MM-DD',
@@ -118,19 +103,16 @@ class LoggerService {
     });
   }
 
-  // Create development logger
   private static createDevLogger(config: LoggerConfig = {}): Logger {
     const { logLevel = 'debug', customFields = {} } = config;
 
     const customFormat = this.createCustomFormat(customFields);
 
     const logFormat = printf(info => {
-      // Safely handle metadata
       const _metadata = info.metadata || {};
       // eslint-disable-next-line unicorn/no-null
       const metaStr = Object.keys(_metadata).length > 0 ? `\n${JSON.stringify(_metadata, null, 2)}` : '';
 
-      // Handle potential undefined values
       const _timestamp = info.timestamp || new Date().toISOString();
       const level = info.level || 'info';
       const message = info.stack || info.message || 'No message';
@@ -154,13 +136,11 @@ class LoggerService {
     });
   }
 
-  // Singleton logger creation
   public static getLogger(config: LoggerConfig = {}): Logger {
     if (!this.instance) {
       this.instance =
         envManager.getEnv('NODE_ENV') === 'development' ? this.createDevLogger(config) : this.createProdLogger(config);
 
-      // Add error handling
       this.instance.on('error', error => {
         console.error('Logger error:', error);
       });
@@ -169,14 +149,12 @@ class LoggerService {
   }
 }
 
-// Export the logger
 export default LoggerService.getLogger({
-  logDir: process.env.LOG_DIR,
-  logLevel: process.env.LOG_LEVEL,
-  maxFileSize: process.env.MAX_FILE_SIZE,
-  maxFiles: process.env.MAX_FILES,
+  logDir: envManager.getEnv('LOG_DIR'),
+  logLevel: envManager.getEnv('LOG_LEVEL'),
+  maxFileSize: envManager.getEnv('MAX_FILE_SIZE'),
+  maxFiles: envManager.getEnv('MAX_FILES'),
   customFields: {
     id: 'server',
-    // Add any other custom fields you want here
   },
 });

@@ -1,16 +1,21 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import dotenv from 'dotenv';
+import 'dotenv/config';
+
 import { z } from 'zod';
 
-dotenv.config();
-
-// register all the env here
 const envSchema = z.object({
-  NODE_ENV: z.string(),
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  PORT: z.coerce.number().default(8080),
+  CORS_ORIGIN: z.string().default('*'),
+  LOG_DIR: z.string().optional(),
+  LOG_LEVEL: z.string().optional(),
+  MAX_FILE_SIZE: z.string().optional(),
+  MAX_FILES: z.string().optional(),
 });
 
 declare global {
   namespace NodeJS {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface ProcessEnv extends z.infer<typeof envSchema> {}
   }
 }
@@ -24,7 +29,7 @@ class EnvManager {
       this.env = result.data;
       console.log(`environment variables [${Object.keys(result.data)}] loaded successfully`);
     } else {
-      const missingVars = result.error.errors.map(err => err.path.join('.')).join(', ');
+      const missingVars = result.error.issues.map(err => err.path.join('.')).join(', ');
       throw new Error(`Missing environment variables: [ ${missingVars} ]`);
     }
   }

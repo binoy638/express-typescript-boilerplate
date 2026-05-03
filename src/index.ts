@@ -1,38 +1,35 @@
 /* eslint-disable unicorn/no-process-exit */
-import cors from 'cors';
-import express from 'express';
-import helmet from 'helmet';
-import morgan from 'morgan';
-
+import app from './app';
+import { envManager } from './config/env';
 import logger from './config/logger';
-import errorHandler from './middlewares/errorHandler.middleware';
-import notFoundHandler from './middlewares/notFoundHandler.middleware';
-import testRouter from './routers/test.router';
 
-const PORT = 8080;
+const PORT = envManager.getEnv('PORT');
 
-const app = express();
-
-//* Middilewares
-app.use(helmet());
-app.use(morgan('tiny'));
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-//* Register routers
-app.use('/api/test', testRouter);
-
-//* Start the server
-app.listen(PORT, () => {
-  try {
-    logger.info(`Listening at http://localhost:${PORT}`);
-  } catch (error) {
-    logger.error('Failed to start server:', error);
-    process.exit(1);
-  }
+const server = app.listen(PORT, () => {
+  logger.info(`Listening at http://localhost:${PORT}`);
 });
 
-//* Error handling middleware
-app.use(notFoundHandler);
-app.use(errorHandler);
+server.on('error', (err: Error) => {
+  logger.error('Server failed to start:', err);
+  process.exit(1);
+});
+
+const shutdown = (signal: string) => {
+  logger.info(`Received ${signal}, shutting down gracefully`);
+  server.close(() => {
+    logger.info('HTTP server closed');
+    process.exit(0);
+  });
+  setTimeout(() => process.exit(1), 10_000).unref();
+};
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('uncaughtException', (err: Error) => {
+  logger.error('Uncaught exception:', err);
+  process.exit(1);
+});
+process.on('unhandledRejection', (reason: unknown) => {
+  logger.error('Unhandled rejection:', reason);
+  process.exit(1);
+});
